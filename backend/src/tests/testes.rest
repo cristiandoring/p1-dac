@@ -1,0 +1,213 @@
+@baseURL = http://localhost:3000
+
+### Listar eventos
+GET {{baseURL}}/events
+
+### Buscar evento por id
+GET {{baseURL}}/events/2
+
+### Buscar evento inexistente (404 esperado)
+GET {{baseURL}}/events/9999
+
+### Criar evento
+POST {{baseURL}}/events
+Content-Type: application/json
+ 
+{
+  "title": "Feira de Adoção de Animais",
+  "description": "Parceria com a ONG local.",
+  "location": "Pátio Central",
+  "event_date": "2026-12-15 10:00:00",
+  "max_volunteers": 8
+}
+
+### Criar evento sem título (400 esperado)
+POST {{baseURL}}/events
+Content-Type: application/json
+
+{
+  "location": "Pátio Central",
+  "event_date": "2026-12-15 10:00:00",
+  "max_volunteers": 8
+}
+
+### Criar evento com limite inválido (400 esperado)
+POST {{baseURL}}/events
+Content-Type: application/json
+
+{
+  "title": "Evento teste",
+  "location": "Sala 1",
+  "event_date": "2026-12-15 10:00:00",
+  "max_volunteers": 0
+}
+
+### Atualizar evento
+PUT {{baseURL}}/events/1
+Content-Type: application/json
+
+{
+  "title": "Campanha de Doação de Sangue (atualizada)",
+  "description": "Doação em parceria com o hemocentro local.",
+  "location": "Ginásio do Campus",
+  "event_date": "2026-11-10 09:00:00",
+  "max_volunteers": 5
+}
+
+### Atualizar evento inexistente (404 esperado)
+PUT {{baseURL}}/events/9999
+Content-Type: application/json
+
+{
+  "title": "Qualquer",
+  "location": "Qualquer",
+  "event_date": "2026-12-01 10:00:00",
+  "max_volunteers": 2
+}
+
+### Excluir evento (204 esperado)
+DELETE {{baseURL}}/events/4
+
+### Excluir evento inexistente (404 esperado)
+DELETE {{baseURL}}/events/9999
+
+### ---------- VOLUNTÁRIOS ----------
+
+### Listar voluntários
+GET {{baseURL}}/volunteers
+
+### Buscar voluntário por id
+GET {{baseURL}}/volunteers/1
+
+### Buscar voluntário inexistente (404 esperado)
+GET {{baseURL}}/volunteers/9999
+
+### Cadastrar voluntário
+POST {{baseURL}}/volunteers
+Content-Type: application/json
+
+{
+  "nome": "Fábio Nunes",
+  "email": "fabio@example.com",
+  "telefone": "54999990006"
+}
+
+### Cadastrar com e-mail inválido (400 esperado)
+POST {{baseURL}}/volunteers
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "email": "email_invalido"
+}
+
+### Cadastrar com e-mail repetido (409 esperado)
+POST {{baseURL}}/volunteers
+Content-Type: application/json
+
+{
+  "nome": "Outra Ana",
+  "email": "ana@example.com"
+}
+
+### Atualizar voluntário
+PUT {{baseURL}}/volunteers/2
+Content-Type: application/json
+
+{
+  "nome": "Bruno Lima Souza",
+  "email": "bruno@example.com",
+  "telefone": "54999990002"
+}
+
+### Atualizar com e-mail de outro voluntário (409 esperado)
+PUT {{baseURL}}/volunteers/2
+Content-Type: application/json
+
+{
+  "nome": "Bruno Lima",
+  "email": "ana@example.com"
+}
+
+### ---------- INSCRIÇÕES ----------
+
+### Restaurar o limite do evento 1 para 3 (ele já tem 2 inscritos)
+PUT {{baseURL}}/events/1
+Content-Type: application/json
+
+{
+  "titulo": "Campanha de Doação de Sangue",
+  "descricao": "Doação em parceria com o hemocentro local.",
+  "localizacao": "Ginásio do Campus",
+  "data_evento": "2026-11-10 09:00:00",
+  "max_voluntarios": 3
+}
+
+### Listar inscritos do evento 1
+GET {{baseURL}}/events/1/volunteers
+
+### Inscrever a Carla (id 3) no evento 1: ocupa a última vaga (201 esperado)
+POST {{baseURL}}/events/1/volunteers
+Content-Type: application/json
+
+{
+  "voluntario_id": 3
+}
+
+### Inscrever o Diego (id 4) no evento 1 lotado (409 esperado)
+POST {{baseURL}}/events/1/volunteers
+Content-Type: application/json
+
+{
+  "voluntario_id": 4
+}
+
+### Inscrever quem já está inscrito (409 esperado)
+POST {{baseURL}}/events/1/volunteers
+Content-Type: application/json
+
+{
+  "voluntario_id": 1
+}
+
+### Inscrever voluntário inexistente (404 esperado)
+POST {{baseURL}}/events/1/volunteers
+Content-Type: application/json
+
+{
+  "voluntario_id": 9999
+}
+
+### Inscrever em evento inexistente (404 esperado)
+POST {{baseURL}}/events/9999/volunteers
+Content-Type: application/json
+
+{
+  "voluntario_id": 1
+}
+
+### Inscrever sem informar voluntario_id (400 esperado)
+POST {{baseURL}}/events/1/volunteers
+Content-Type: application/json
+
+{}
+
+### Reduzir o limite do evento 1 abaixo dos inscritos (409 esperado)
+PUT {{baseURL}}/events/1
+Content-Type: application/json
+
+{
+  "titulo": "Campanha de Doação de Sangue",
+  "localizacao": "Ginásio do Campus",
+  "data_evento": "2026-11-10 09:00:00",
+  "max_voluntarios": 1
+}
+
+### Cancelar a inscrição da Carla no evento 1 (204 esperado)
+DELETE {{baseURL}}/events/1/volunteers/3
+
+### Cancelar inscrição inexistente (404 esperado)
+DELETE {{baseURL}}/events/1/volunteers/3
+
+### Excluir voluntário (204 esperado; use o id do Fábio, provavelmente 6)
+DELETE {{baseURL}}/volunteers/6
