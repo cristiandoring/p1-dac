@@ -1,4 +1,5 @@
 const EventoModel = require('../models/eventoModel');
+const InscricaoModel = require('../models/inscricaoModel');
 const AppError = require('../utils/AppError');
 
 /**
@@ -15,6 +16,19 @@ function validarDadosEvento({ titulo, localizacao, data_evento, max_voluntarios 
   }
   if (!Number.isInteger(max_voluntarios) || max_voluntarios < 1) {
     throw new AppError('O limite de voluntários deve ser um inteiro maior que zero.');
+  }
+}
+
+/**
+ * Garante que o novo limite de vagas não fica abaixo do total já inscrito.
+ * @param {number|string} eventoId - Id do evento que está sendo editado.
+ * @param {number} novoLimite - Novo valor de max_voluntarios.
+ * @throws {AppError} 409 se já houver mais inscritos do que o novo limite permite.
+ */
+async function garantirLimiteCompativel(eventoId, novoLimite) {
+  const inscritos = await InscricaoModel.contarPorEvento(eventoId);
+  if (novoLimite < inscritos) {
+    throw new AppError(`O limite não pode ser menor que o total de inscritos (${inscritos}).`, 409);
   }
 }
 
@@ -56,11 +70,12 @@ class EventoService {
    * @param {number|string} id - Id do evento.
    * @param {object} dados - Novos dados do evento.
    * @returns {Promise<object>} O evento atualizado.
-   * @throws {AppError} 404 se o evento não existir.
+   * @throws {AppError} 404 se o evento não existir; 409 se o limite ficar abaixo dos inscritos.
    */
   static async atualizarEvento(id, dados) {
     await EventoService.buscarEventoPorId(id);
     validarDadosEvento(dados);
+    await garantirLimiteCompativel(id, dados.max_voluntarios);
     await EventoModel.atualizar(id, dados);
     return EventoModel.buscarPorId(id);
   }

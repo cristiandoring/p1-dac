@@ -5,6 +5,11 @@ const helmet = require('helmet');
 const eventoRoutes = require('./routes/eventoRoutes');
 const voluntarioRoutes = require('./routes/voluntarioRoutes');
 const inscricaoRoutes = require('./routes/inscricaoRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const authRoutes = require('./routes/authRoutes');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
 const app = express();
@@ -20,8 +25,11 @@ app.get('/', (req, res) => {
 app.use('/events/:eventoId/volunteers', inscricaoRoutes);
 app.use('/events', eventoRoutes);
 app.use('/volunteers', voluntarioRoutes);
+app.use('/auth', authRoutes);
+app.use('/dashboard', dashboardRoutes);
 
-// Deve ser o último: só captura erros de rotas registradas antes dele
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(errorMiddleware);
 
 module.exports = app;

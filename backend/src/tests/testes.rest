@@ -1,4 +1,69 @@
 @baseURL = http://localhost:3000
+@token = {{login.response.body.$.token}}
+@tokenComum = {{loginComum.response.body.$.token}}
+
+
+# 1. AUTENTICAÇÃO
+
+### Login como admin
+# @name login
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ifrs.edu.br",
+  "senha": "123456"
+}
+
+### Login como usuário
+# @name loginComum
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@ifrs.edu.br",
+  "senha": "123456"
+}
+
+### Login com senha errada
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ifrs.edu.br",
+  "senha": "errada"
+}
+
+### Login com e-mail inexistente
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ninguem@ifrs.edu.br",
+  "senha": "123456"
+}
+
+### Login sem senha
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ifrs.edu.br"
+}
+
+### Dashboard com token
+GET {{baseURL}}/dashboard
+Authorization: Bearer {{token}}
+
+### Dashboard sem token
+GET {{baseURL}}/dashboard
+
+### Dashboard com token inválido
+GET {{baseURL}}/dashboard
+Authorization: Bearer token.invalido.123
+
+
+# 2. EVENTOS
 
 ### Listar eventos
 GET {{baseURL}}/events
@@ -6,84 +71,133 @@ GET {{baseURL}}/events
 ### Buscar evento por id
 GET {{baseURL}}/events/2
 
-### Buscar evento inexistente (404 esperado)
+### Buscar evento inexistente
 GET {{baseURL}}/events/9999
 
-### Criar evento
+### Criar evento como admin
+# @name eventoCriado
 POST {{baseURL}}/events
+Authorization: Bearer {{token}}
 Content-Type: application/json
- 
+
 {
-  "title": "Feira de Adoção de Animais",
-  "description": "Parceria com a ONG local.",
-  "location": "Pátio Central",
-  "event_date": "2026-12-15 10:00:00",
-  "max_volunteers": 8
+  "titulo": "Feira de Adoção de Animais",
+  "descricao": "Parceria com a ONG local.",
+  "localizacao": "Pátio Central",
+  "data_evento": "2026-12-15 10:00:00",
+  "max_voluntarios": 8
 }
 
-### Criar evento sem título (400 esperado)
+### Criar evento sem token
 POST {{baseURL}}/events
 Content-Type: application/json
 
 {
-  "location": "Pátio Central",
-  "event_date": "2026-12-15 10:00:00",
-  "max_volunteers": 8
+  "titulo": "Evento sem login",
+  "localizacao": "Sala 2",
+  "data_evento": "2026-12-20 10:00:00",
+  "max_voluntarios": 4
 }
 
-### Criar evento com limite inválido (400 esperado)
+### Criar evento com token inválido
 POST {{baseURL}}/events
+Authorization: Bearer token.invalido.123
 Content-Type: application/json
 
 {
-  "title": "Evento teste",
-  "location": "Sala 1",
-  "event_date": "2026-12-15 10:00:00",
-  "max_volunteers": 0
+  "titulo": "Evento token inválido",
+  "localizacao": "Sala 2",
+  "data_evento": "2026-12-20 10:00:00",
+  "max_voluntarios": 4
+}
+
+### Criar evento como usuário comum
+POST {{baseURL}}/events
+Authorization: Bearer {{tokenComum}}
+Content-Type: application/json
+
+{
+  "titulo": "Evento do usuário comum",
+  "localizacao": "Sala 2",
+  "data_evento": "2026-12-20 10:00:00",
+  "max_voluntarios": 4
+}
+
+### Criar evento sem título
+POST {{baseURL}}/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "localizacao": "Pátio Central",
+  "data_evento": "2026-12-15 10:00:00",
+  "max_voluntarios": 8
+}
+
+### Criar evento com limite inválido
+POST {{baseURL}}/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "titulo": "Evento teste",
+  "localizacao": "Sala 1",
+  "data_evento": "2026-12-15 10:00:00",
+  "max_voluntarios": 0
 }
 
 ### Atualizar evento
 PUT {{baseURL}}/events/1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title": "Campanha de Doação de Sangue (atualizada)",
-  "description": "Doação em parceria com o hemocentro local.",
-  "location": "Ginásio do Campus",
-  "event_date": "2026-11-10 09:00:00",
-  "max_volunteers": 5
+  "titulo": "Campanha de Doação de Sangue (atualizada)",
+  "descricao": "Doação em parceria com o hemocentro local.",
+  "localizacao": "Ginásio do Campus",
+  "data_evento": "2026-11-10 09:00:00",
+  "max_voluntarios": 5
 }
 
-### Atualizar evento inexistente (404 esperado)
+### Atualizar evento inexistente
 PUT {{baseURL}}/events/9999
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title": "Qualquer",
-  "location": "Qualquer",
-  "event_date": "2026-12-01 10:00:00",
-  "max_volunteers": 2
+  "titulo": "Qualquer",
+  "localizacao": "Qualquer",
+  "data_evento": "2026-12-01 10:00:00",
+  "max_voluntarios": 2
 }
 
-### Excluir evento (204 esperado)
-DELETE {{baseURL}}/events/4
+### Excluir evento
+DELETE {{baseURL}}/events/3
+Authorization: Bearer {{token}}
 
-### Excluir evento inexistente (404 esperado)
+### Excluir evento inexistente
 DELETE {{baseURL}}/events/9999
+Authorization: Bearer {{token}}
 
-### ---------- VOLUNTÁRIOS ----------
+
+# 3. VOLUNTÁRIOS
 
 ### Listar voluntários
 GET {{baseURL}}/volunteers
+Authorization: Bearer {{token}}
 
 ### Buscar voluntário por id
 GET {{baseURL}}/volunteers/1
+Authorization: Bearer {{token}}
 
-### Buscar voluntário inexistente (404 esperado)
+### Buscar voluntário inexistente
 GET {{baseURL}}/volunteers/9999
+Authorization: Bearer {{token}}
 
 ### Cadastrar voluntário
+# @name voluntarioCriado
 POST {{baseURL}}/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -92,8 +206,9 @@ Content-Type: application/json
   "telefone": "54999990006"
 }
 
-### Cadastrar com e-mail inválido (400 esperado)
+### Cadastrar com e-mail inválido
 POST {{baseURL}}/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -101,8 +216,17 @@ Content-Type: application/json
   "email": "email_invalido"
 }
 
-### Cadastrar com e-mail repetido (409 esperado)
+### Cadastrar sem nome
 POST {{baseURL}}/volunteers
+Content-Type: application/json
+
+{
+  "email": "semnome@example.com"
+}
+
+### Cadastrar com e-mail duplicado
+POST {{baseURL}}/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -112,6 +236,7 @@ Content-Type: application/json
 
 ### Atualizar voluntário
 PUT {{baseURL}}/volunteers/2
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -120,8 +245,9 @@ Content-Type: application/json
   "telefone": "54999990002"
 }
 
-### Atualizar com e-mail de outro voluntário (409 esperado)
+### Atualizar com e-mail duplicado
 PUT {{baseURL}}/volunteers/2
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -129,10 +255,30 @@ Content-Type: application/json
   "email": "ana@example.com"
 }
 
-### ---------- INSCRIÇÕES ----------
+### Atualizar voluntário inexistente
+PUT {{baseURL}}/volunteers/9999
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-### Restaurar o limite do evento 1 para 3 (ele já tem 2 inscritos)
+{
+  "nome": "Qualquer",
+  "email": "qualquer@example.com"
+}
+
+### Excluir voluntário
+DELETE {{baseURL}}/volunteers/6
+Authorization: Bearer {{token}}
+
+### Excluir voluntário inexistente
+DELETE {{baseURL}}/volunteers/9999
+Authorization: Bearer {{token}}
+
+
+# 4. INSCRIÇÕES
+
+### Restaurar evento 1
 PUT {{baseURL}}/events/1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -146,68 +292,75 @@ Content-Type: application/json
 ### Listar inscritos do evento 1
 GET {{baseURL}}/events/1/volunteers
 
-### Inscrever a Carla (id 3) no evento 1: ocupa a última vaga (201 esperado)
+### Inscrever voluntário
 POST {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "voluntario_id": 3
 }
 
-### Inscrever o Diego (id 4) no evento 1 lotado (409 esperado)
+### Inscrever em evento lotado
 POST {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "voluntario_id": 4
 }
 
-### Inscrever quem já está inscrito (409 esperado)
+### Inscrever voluntário já inscrito
 POST {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "voluntario_id": 1
 }
 
-### Inscrever voluntário inexistente (404 esperado)
+### Inscrever voluntário inexistente
 POST {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "voluntario_id": 9999
 }
 
-### Inscrever em evento inexistente (404 esperado)
+### Inscrever em evento inexistente
 POST {{baseURL}}/events/9999/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "voluntario_id": 1
 }
 
-### Inscrever sem informar voluntario_id (400 esperado)
+### Inscrever sem voluntario_id
 POST {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {}
 
-### Reduzir o limite do evento 1 abaixo dos inscritos (409 esperado)
+### Reduzir limite abaixo do total de inscritos
 PUT {{baseURL}}/events/1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "titulo": "Campanha de Doação de Sangue",
+  "descricao": "Doação em parceria com o hemocentro local.",
   "localizacao": "Ginásio do Campus",
   "data_evento": "2026-11-10 09:00:00",
   "max_voluntarios": 1
 }
 
-### Cancelar a inscrição da Carla no evento 1 (204 esperado)
+### Cancelar inscrição
 DELETE {{baseURL}}/events/1/volunteers/3
+Authorization: Bearer {{token}}
 
-### Cancelar inscrição inexistente (404 esperado)
+### Cancelar inscrição inexistente
 DELETE {{baseURL}}/events/1/volunteers/3
-
-### Excluir voluntário (204 esperado; use o id do Fábio, provavelmente 6)
-DELETE {{baseURL}}/volunteers/6
+Authorization: Bearer {{token}}

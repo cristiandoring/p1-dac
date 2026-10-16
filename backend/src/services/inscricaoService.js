@@ -5,6 +5,8 @@ const AppError = require('../utils/AppError');
 
 /**
  * Garante que o voluntário ainda não está inscrito no evento.
+ * @param {number|string} eventoId - Id do evento.
+ * @param {number|string} voluntarioId - Id do voluntário.
  * @throws {AppError} 409 se já houver inscrição.
  */
 async function garantirNaoInscrito(eventoId, voluntarioId) {

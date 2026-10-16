@@ -1,0 +1,391 @@
+:root {
+  --verde: #2f9e41;
+  --vermelho: #c62828;
+  --texto: #1f2933;
+  --fundo: #f4f6f8;
+  --margem-lateral: clamp(12px, 3vw, 40px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 112.5%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fundo);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin: 0 0 1rem;
+}
+
+.container {
+  flex: 1;
+  width: 100%;
+  padding: 1.5rem var(--margem-lateral);
+}
+
+/* ---- Menu ---- */
+
+.navbar {
+  background: #fff;
+  border-bottom: 3px solid var(--verde);
+}
+
+.navbar-inner {
+  width: 100%;
+  padding: 0.75rem var(--margem-lateral);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--verde);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.nav-links a.active {
+  color: var(--verde);
+  font-weight: 700;
+}
+
+/* ---- Cartão e botões ---- */
+
+.card {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  background: var(--verde);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--perigo {
+  background: var(--vermelho);
+}
+
+a.btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* ---- Formulários ---- */
+
+.form {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Campos em colunas: se distribuem conforme a largura disponível */
+.form--grade {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.form--linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.form--linha .form-group {
+  flex: 1 1 16rem;
+}
+
+.form > .btn {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #c4ccd4;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.alert {
+  background: #fdecea;
+  color: var(--vermelho);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+}
+
+/* ---- Rodapé ---- */
+
+.footer {
+  background: #fff;
+  border-top: 1px solid #dde3e8;
+}
+
+.footer-inner {
+  width: 100%;
+  padding: 0.75rem var(--margem-lateral);
+  text-align: center;
+  color: #607080;
+  font-size: 0.9rem;
+}
+
+/* ---- Cabeçalho de página e tabelas ---- */
+
+.cabecalho-pagina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.cabecalho-pagina h1 {
+  margin: 0;
+}
+
+.tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+}
+
+.tabela th,
+.tabela td {
+  text-align: left;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #e3e8ec;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---- Detalhe do evento ---- */
+
+.detalhes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem 1.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.detalhes dt {
+  font-weight: 600;
+  color: #607080;
+  font-size: 0.85rem;
+}
+
+.detalhes dd {
+  margin: 0.15rem 0 0;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 0.1rem 0.65rem;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: var(--verde);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.etiqueta--lotado {
+  background: #fdecea;
+  color: var(--vermelho);
+}
+
+.secao {
+  margin-top: 1.5rem;
+}
+
+.secao h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    padding: 0.6rem 0.9rem;
+  }
+}
+
+/* ---- Validação de formulários ---- */
+
+.obrigatorio {
+  color: var(--vermelho);
+}
+
+.form-input:focus {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.form-input--erro {
+  border-color: var(--vermelho);
+  background: #fff8f7;
+}
+
+.form-input--erro:focus {
+  outline-color: var(--vermelho);
+}
+
+.form-erro {
+  color: var(--vermelho);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-erro::before {
+  content: '⚠ ';
+}
+
+/* ---- Dashboard ---- */
+
+.estatisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.estatistica {
+  background: var(--fundo);
+  border-left: 4px solid var(--verde);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.estatistica-valor {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--verde);
+}
+
+.estatistica-rotulo {
+  color: #607080;
+}
+
+.eventos-resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}
+
+.evento-resumo {
+  border: 1px solid #e3e8ec;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.evento-resumo h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.evento-resumo h3 a {
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.evento-resumo h3 a:hover {
+  text-decoration: underline;
+}
+
+.evento-resumo-data {
+  margin: 0 0 0.75rem;
+  color: #607080;
+  font-size: 0.9rem;
+}
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.chip {
+  background: #eef2f5;
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.vazio {
+  margin: 0.75rem 0 0;
+  color: #607080;
+}

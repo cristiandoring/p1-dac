@@ -55,10 +55,10 @@ class InscricaoModel {
    * @returns {Promise<void>}
    */
   static async criar(eventoId, voluntarioId) {
-    await db.query(
-      'INSERT INTO inscricoes (evento_id, voluntario_id) VALUES (?, ?)',
-      [eventoId, voluntarioId],
-    );
+    await db.query('INSERT INTO inscricoes (evento_id, voluntario_id) VALUES (?, ?)', [
+      eventoId,
+      voluntarioId,
+    ]);
   }
 
   /**
