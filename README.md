@@ -4,13 +4,13 @@ Sistema monolítico para gerenciar **voluntários** e **eventos sociais** do IFR
 
 - **Back-end:** Node.js + Express 5, MySQL (`mysql2`), JWT, Swagger (OpenAPI), JSDoc
 - **Front-end:** React 19 + Vite, React Router, Axios
-- **Qualidade:** ESLint + Prettier nos dois projetos
+- **Padronização:** ESLint + Prettier nos dois projetos
 
 ## Instalação e execução
 
 ### Pré-requisitos
 
-Node.js 20.19+ (ou 22+) e MySQL 8+.
+Node.js 20.19+ e MySQL 8+.
 
 ### 1. Banco de dados
 

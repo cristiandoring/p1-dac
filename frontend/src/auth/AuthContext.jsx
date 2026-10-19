@@ -12,7 +12,7 @@ function lerUsuarioSalvo() {
 }
 
 export function AuthProvider({ children }) {
-  // A sessão é restaurada já na criação do estado (vale após F5)
+  // A sessão é restaurada já na criação do estado
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [user, setUser] = useState(lerUsuarioSalvo);
 
