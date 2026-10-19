@@ -65,7 +65,7 @@ export default function Voluntarios() {
                   <td>{voluntario.nome}</td>
                   <td>{voluntario.email}</td>
                   <td>{voluntario.telefone ? mascararTelefone(voluntario.telefone) : '—'}</td>
-                  
+
                   {ehAdmin && (
                     <td className="acoes">
                       <Link className="btn" to={`/volunteers/${voluntario.id}/edit`}>
