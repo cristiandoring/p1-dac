@@ -133,11 +133,6 @@ Também é possível rodar `npm run lint` / `npm run format` dentro de `backend`
 | `/volunteers/new`, `/volunteers/:id/edit` | admin |
 | `/dashboard` | Autenticado |
 
-## Repositório e vídeo
-
-- GitHub: _<colocar o link do repositório>_
-- Vídeo: ver `video.txt`
-
 ## Autor
 
 Cristian Doring Molon
