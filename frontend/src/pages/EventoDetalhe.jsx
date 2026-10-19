@@ -138,8 +138,7 @@ export default function EventoDetalhe() {
       {ehAdmin && (
         <div className="secao">
           <h2>Inscrever voluntário</h2>
-          <form onSubmit={inscrever} className="form form--grade" noValidate>
-            <FormSelect
+          <form onSubmit={inscrever} className="form form--estreito" noValidate>            <FormSelect
               label="Voluntário"
               name="voluntario_id"
               value={voluntarioId}

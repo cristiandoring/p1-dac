@@ -172,7 +172,7 @@ Content-Type: application/json
 }
 
 ### Excluir evento
-DELETE {{baseURL}}/events/3
+DELETE {{baseURL}}/events/5
 Authorization: Bearer {{token}}
 
 ### Excluir evento inexistente
@@ -219,6 +219,8 @@ Content-Type: application/json
 ### Cadastrar sem nome
 POST {{baseURL}}/volunteers
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 {
   "email": "semnome@example.com"
@@ -291,6 +293,8 @@ Content-Type: application/json
 
 ### Listar inscritos do evento 1
 GET {{baseURL}}/events/1/volunteers
+Authorization: Bearer {{token}}
+
 
 ### Inscrever voluntário
 POST {{baseURL}}/events/1/volunteers
@@ -307,7 +311,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "voluntario_id": 4
+  "voluntario_id": 5
 }
 
 ### Inscrever voluntário já inscrito
